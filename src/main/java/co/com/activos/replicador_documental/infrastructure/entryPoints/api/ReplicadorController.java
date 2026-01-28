@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import co.com.activos.replicador_documental.domain.model.MigrationMessage;
 import co.com.activos.replicador_documental.infrastructure.adapters.pubsub.ManualPubSubPublisher;
+import co.com.activos.replicador_documental.infrastructure.adapters.pubsub.PubSubCleanupService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +30,22 @@ class ReplicadorController {
     private final SoapClientAdapter soapClientAdapter;
     private final DocumentRegistrationClient documentRegistrationClient;
     private final ManualPubSubPublisher manualPubSubPublisher;
+    private final PubSubCleanupService pubSubCleanupService;
     private final ObjectMapper objectMapper;
 
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
         return ResponseEntity.ok("pong");
+    }
+
+    @PostMapping("/cleanup-pubsub")
+    public ResponseEntity<String> cleanupPendingMessages() {
+        try {
+            pubSubCleanupService.quickAck();
+            return ResponseEntity.ok("Limpieza de mensajes pendientes iniciada");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error en limpieza: " + e.getMessage());
+        }
     }
 
 
