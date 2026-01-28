@@ -27,7 +27,7 @@ public class DocumentRegistrationClientImpl implements DocumentRegistrationClien
     @Value("${document.registration.api.url:https://ms-tr-gestor-documental-194964492367.us-east1.run.app/api/register}")
     private String apiUrl;
 
-    @Value("${document.registration.api.token:sk_app_prueba_72K9xYpQrStUvWxZaBcDeFgHiJmNoPqR1234567890")
+    @Value("${document.registration.api.token:sk_app_prueba_72K9xYpQrStUvWxZaBcDeFgHiJmNoPqR1234567890}")
     private String apiToken;
 
     private final RestTemplate restTemplate;
@@ -41,7 +41,7 @@ public class DocumentRegistrationClientImpl implements DocumentRegistrationClien
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.add("X-Current-Token",apiToken);
+            headers.add("X-Current-Token", apiToken);
 
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
